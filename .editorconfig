@@ -1,0 +1,78 @@
+﻿; EditorConfig to support per-solution formatting.
+; Use the EditorConfig VS add-in to make this work.
+; http://editorconfig.org/
+; VS Add-In: http://visualstudiogallery.msdn.microsoft.com/c8bccfe2-650c-4b42-bc5c-845e21f96328
+; Sublime Text Add-In: https://github.com/sindresorhus/editorconfig-sublime#readme
+
+; Wildcards aren't used because there's a bug...
+; https://github.com/editorconfig/editorconfig-visualstudio/issues/21
+
+; This is the default for the codeline.
+root = true
+
+; default - tab
+[*]
+end_of_line = CRLF
+indent_style = tab
+trim_trailing_whitespace = true
+
+; space / 4
+[*.ascx]
+indent_style = space
+indent_size = 4
+[*.aspx]
+indent_style = space
+indent_size = 4
+[*.config]
+indent_style = space
+indent_size = 4
+[*.cshtml]
+indent_style = space
+indent_size = 4
+[*.html]
+indent_style = space
+indent_size = 4
+[*.proj]
+indent_style = space
+indent_size = 4
+[*.targets]
+indent_style = space
+indent_size = 4
+[*.wxi]
+indent_style = space
+indent_size = 4
+[*.wxl]
+indent_style = space
+indent_size = 4
+[*.wxs]
+indent_style = space
+indent_size = 4
+[*.xml]
+indent_style = space
+indent_size = 4
+
+; space / 2
+[*.csproj]
+indent_style = space
+indent_size = 2
+[*.json]
+indent_style = space
+indent_size = 2
+[*.kproj]
+indent_style = space
+indent_size = 2
+[*.resx]
+indent_style = space
+indent_size = 2
+[*.rst]
+indent_style = space
+indent_size = 2
+[*.xproj]
+indent_style = space
+indent_size = 2
+[NuGet.Config]
+indent_style = space
+indent_size = 2
+[packages.config]
+indent_style = space
+indent_size = 2

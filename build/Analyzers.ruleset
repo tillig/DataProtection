@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Code Analysis Rules" Description="These rules help ensure basic standards." ToolsVersion="14.0">
+  <!-- https://github.com/dotnet/roslyn/blob/master/docs/compilers/Rule%20Set%20Format.md -->
+  <IncludeAll Action="Warning" />
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <!-- Tabs must not be used -->
+    <Rule Id="SA1027" Action="None" />
+    <!-- Use built-in type alias -->
+    <Rule Id="SA1121" Action="None" />
+    <!-- Use String.Empty instead of "" -->
+    <Rule Id="SA1122" Action="None" />
+    <!-- Fields can't start with underscore -->
+    <Rule Id="SA1309" Action="None" />
+    <!-- File must have header -->
+    <Rule Id="SA1633" Action="None" />
+    <!-- Enable XML documentation output-->
+    <Rule Id="SA1652" Action="None" />
+  </Rules>
+</RuleSet>
