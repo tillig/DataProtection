@@ -16,40 +16,6 @@ namespace DataProtectionExtensions
 	public static class DataProtectionBuilderExtensions
 	{
 		/// <summary>
-		/// Sets up data protection to persist session keys in Redis.
-		/// </summary>
-		/// <param name="builder">The <see cref="IDataProtectionBuilder"/> used to set up data protection options.</param>
-		/// <param name="redisConnectionString">The connection string specifying the Redis instance and database for key storage.</param>
-		/// <returns>
-		/// The <paramref name="builder" /> for continued configuration.
-		/// </returns>
-		/// <exception cref="System.ArgumentNullException">
-		/// Thrown if <paramref name="builder" /> or <paramref name="redisConnectionString" /> is <see langword="null" />.
-		/// </exception>
-		/// <exception cref="System.ArgumentException">
-		/// Thrown if <paramref name="redisConnectionString" /> is empty.
-		/// </exception>
-		public static IDataProtectionBuilder PersistKeysToRedis(this IDataProtectionBuilder builder, string redisConnectionString)
-		{
-			if (builder == null)
-			{
-				throw new ArgumentNullException(nameof(builder));
-			}
-
-			if (redisConnectionString == null)
-			{
-				throw new ArgumentNullException(nameof(redisConnectionString));
-			}
-
-			if (redisConnectionString.Length == 0)
-			{
-				throw new ArgumentException("Redis connection string may not be empty.", nameof(redisConnectionString));
-			}
-
-			return builder.Use(ServiceDescriptor.Singleton<IXmlRepository>(services => new RedisXmlRepository(redisConnectionString, services.GetRequiredService<ILogger<RedisXmlRepository>>())));
-		}
-
-		/// <summary>
 		/// Sets up data protection to protect session keys with a provided certificate.
 		/// </summary>
 		/// <param name="builder">The <see cref="IDataProtectionBuilder"/> used to set up data protection options.</param>

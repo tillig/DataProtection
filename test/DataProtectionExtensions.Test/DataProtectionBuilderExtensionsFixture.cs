@@ -11,37 +11,6 @@ namespace DataProtectionExtensions.Test
 	public class DataProtectionBuilderExtensionsFixture
 	{
 		[Fact]
-		public void PersistKeysToRedis_EmptyConnectionString()
-		{
-			var builder = new DataProtectionBuilder(new ServiceCollection());
-			Assert.Throws<ArgumentException>(() => DataProtectionBuilderExtensions.PersistKeysToRedis(builder, ""));
-		}
-
-		[Fact]
-		public void PersistKeysToRedis_NullBuilder()
-		{
-			Assert.Throws<ArgumentNullException>(() => DataProtectionBuilderExtensions.PersistKeysToRedis(null, "connection"));
-		}
-
-		[Fact]
-		public void PersistKeysToRedis_NullConnectionString()
-		{
-			var builder = new DataProtectionBuilder(new ServiceCollection());
-			Assert.Throws<ArgumentNullException>(() => DataProtectionBuilderExtensions.PersistKeysToRedis(builder, null));
-		}
-
-		[Fact]
-		public void PersistKeysToRedis_RegistersServices()
-		{
-			var builder = new DataProtectionBuilder(new ServiceCollection());
-			builder.PersistKeysToRedis("connection");
-
-			// A lambda factory gets registered for the repo so we can't test the type without actually
-			// trying to connect to Redis.
-			Assert.Single(builder.Services.Where(s => s.ServiceType == typeof(IXmlRepository)));
-		}
-
-		[Fact]
 		public void ProtectKeysWithProvidedCertificate_NullBuilder()
 		{
 			Assert.Throws<ArgumentNullException>(() => DataProtectionBuilderExtensions.ProtectKeysWithProvidedCertificate(null, TestCertificate.GetCertificate()));
