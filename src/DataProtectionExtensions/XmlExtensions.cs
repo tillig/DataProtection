@@ -88,7 +88,7 @@ namespace DataProtectionExtensions
 
 			// EncryptedXml needs an XmlDocument so we create a dummy doc with a
 			// <root /> element.
-			var xmlDocument = new XmlDocument();
+			var xmlDocument = new XmlDocument() { XmlResolver = null };
 			xmlDocument.Load(new XElement("root", element).CreateReader());
 			return xmlDocument;
 		}

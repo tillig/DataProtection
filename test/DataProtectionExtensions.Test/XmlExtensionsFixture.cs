@@ -12,8 +12,10 @@ namespace DataProtectionExtensions.Test
 		[Fact]
 		public void ElementToProcess_GetsCorrectElement()
 		{
-			var doc = new XmlDocument();
-			doc.LoadXml("<root><test node=\"1\">text</test></root>");
+			var doc = new XmlDocument() { XmlResolver = null };
+			var sreader = new System.IO.StringReader("<root><test node=\"1\">text</test></root>");
+			var reader = new XmlTextReader(sreader) { DtdProcessing = DtdProcessing.Prohibit };
+			doc.Load(reader);
 			var element = doc.ElementToProcess();
 			Assert.Equal("<test node=\"1\">text</test>", element.OuterXml);
 		}
@@ -28,8 +30,10 @@ namespace DataProtectionExtensions.Test
 		public void ToXElement_ConvertsNode()
 		{
 			string xml = "<root><test node=\"1\">text</test></root>";
-			var doc = new XmlDocument();
-			doc.LoadXml(xml);
+			var doc = new XmlDocument() { XmlResolver = null };
+			var sreader = new System.IO.StringReader(xml);
+			var reader = new XmlTextReader(sreader) { DtdProcessing = DtdProcessing.Prohibit };
+			doc.Load(reader);
 			var el = doc.ToXElement();
 			Assert.Equal(xml, el.ToString(SaveOptions.DisableFormatting));
 		}

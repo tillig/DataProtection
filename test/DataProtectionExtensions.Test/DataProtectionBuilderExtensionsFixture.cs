@@ -38,7 +38,7 @@ namespace DataProtectionExtensions.Test
 
 			// A lambda factory gets registered for the repo so we can't test the type without actually
 			// trying to connect to Redis.
-			Assert.Equal(1, builder.Services.Where(s => s.ServiceType == typeof(IXmlRepository)).Count());
+			Assert.Single(builder.Services.Where(s => s.ServiceType == typeof(IXmlRepository)));
 		}
 
 		[Fact]
@@ -61,11 +61,11 @@ namespace DataProtectionExtensions.Test
 			var certificate = TestCertificate.GetCertificate();
 			builder.ProtectKeysWithProvidedCertificate(certificate);
 
-			Assert.Equal(1, builder.Services.Where(s => s.ServiceType == typeof(CertificateEncryptionOptions)).Count());
+			Assert.Single(builder.Services.Where(s => s.ServiceType == typeof(CertificateEncryptionOptions)));
 			Assert.Same(certificate, ((CertificateEncryptionOptions)builder.Services.First(s => s.ServiceType == typeof(CertificateEncryptionOptions)).ImplementationInstance).Certificate);
-			Assert.Equal(1, builder.Services.Where(s => s.ServiceType == typeof(IXmlEncryptor)).Count());
+			Assert.Single(builder.Services.Where(s => s.ServiceType == typeof(IXmlEncryptor)));
 			Assert.Equal(typeof(CertificateXmlEncryptor), builder.Services.First(s => s.ServiceType == typeof(IXmlEncryptor)).ImplementationType);
-			Assert.Equal(1, builder.Services.Where(s => s.ServiceType == typeof(IXmlDecryptor)).Count());
+			Assert.Single(builder.Services.Where(s => s.ServiceType == typeof(IXmlDecryptor)));
 			Assert.Equal(typeof(CertificateXmlDecryptor), builder.Services.First(s => s.ServiceType == typeof(IXmlDecryptor)).ImplementationType);
 		}
 
@@ -92,7 +92,7 @@ namespace DataProtectionExtensions.Test
 			services.Add(new ServiceDescriptor(typeof(string), "b"));
 			var builder = new DataProtectionBuilder(services);
 			builder.Use(descriptor);
-			Assert.Equal(1, services.Where(s => s.ServiceType == typeof(string)).Count());
+			Assert.Single(services.Where(s => s.ServiceType == typeof(string)));
 			Assert.Equal("c", services[0].ImplementationInstance);
 		}
 	}

@@ -88,7 +88,7 @@ namespace DataProtectionExtensions
 			// and encrypted inside the overall package.
 			this._sessionKey = new RijndaelManaged
 			{
-				KeySize = SessionKeySize
+				KeySize = SessionKeySize,
 			};
 		}
 
@@ -107,6 +107,7 @@ namespace DataProtectionExtensions
 		public void Dispose()
 		{
 			this.Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		/// <summary>
@@ -153,27 +154,27 @@ namespace DataProtectionExtensions
 			{
 				Type = EncryptedXml.XmlEncElementUrl,
 				Id = EncryptedElementId,
-				EncryptionMethod = new EncryptionMethod(EncryptedXml.XmlEncAES256Url)
+				EncryptionMethod = new EncryptionMethod(EncryptedXml.XmlEncAES256Url),
 			};
 
 			var encryptedKey = new EncryptedKey
 			{
 				CipherData = new CipherData(EncryptedXml.EncryptKey(this._sessionKey.Key, this._keyProvider, false)),
-				EncryptionMethod = new EncryptionMethod(EncryptedXml.XmlEncRSA15Url)
+				EncryptionMethod = new EncryptionMethod(EncryptedXml.XmlEncRSA15Url),
 			};
 
 			// "Connect" the encrypted data and encrypted key with
 			// element references.
 			var encryptedElementDataReference = new DataReference
 			{
-				Uri = "#" + EncryptedElementId
+				Uri = "#" + EncryptedElementId,
 			};
 			encryptedKey.AddReference(encryptedElementDataReference);
 			encryptedData.KeyInfo.AddClause(new KeyInfoEncryptedKey(encryptedKey));
 
 			var keyName = new KeyInfoName
 			{
-				Value = this._keyName
+				Value = this._keyName,
 			};
 			encryptedKey.KeyInfo.AddClause(keyName);
 

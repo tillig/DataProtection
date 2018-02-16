@@ -59,7 +59,7 @@ namespace DataProtectionExtensions.Test
 		{
 			var context = CreateProvider();
 			var mockProvider = Mock.Get(context.Database);
-			mockProvider.Setup(x => x.HashGetAll(RedisXmlRepository.RedisHashKey, CommandFlags.None)).Returns(new HashEntry[0]);
+			mockProvider.Setup(x => x.HashGetAll(RedisXmlRepository.RedisHashKey, CommandFlags.None)).Returns(Array.Empty<HashEntry>());
 			var elements = context.Repository.GetAllElements();
 			Assert.NotNull(elements);
 			Assert.Empty(elements);
@@ -162,7 +162,7 @@ namespace DataProtectionExtensions.Test
 			{
 				Connection = connection.Object,
 				Database = database.Object,
-				Repository = provider
+				Repository = provider,
 			};
 		}
 
