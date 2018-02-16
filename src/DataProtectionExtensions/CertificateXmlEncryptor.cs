@@ -74,8 +74,7 @@ namespace DataProtectionExtensions
 			// there are a lot of bugs and shortcomings in the way
 			// DI is integrated into the data protection mechanism.
 			// They don't support constructor injection.
-			// https://github.com/aspnet/DataProtection/issues/134
-			// https://github.com/aspnet/DataProtection/issues/154
+			// https://github.com/aspnet/Home/issues/2523
 			this.Logger = serviceProvider.GetRequiredService<ILogger<CertificateXmlEncryptor>>();
 			var options = serviceProvider.GetRequiredService<CertificateEncryptionOptions>();
 
