@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.DataProtection.Internal;
-using Microsoft.AspNetCore.DataProtection.Repositories;
-using Microsoft.AspNetCore.DataProtection.XmlEncryption;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace DataProtectionExtensions.Test
@@ -24,45 +24,34 @@ namespace DataProtectionExtensions.Test
 		}
 
 		[Fact]
-		public void ProtectKeysWithProvidedCertificate_RegistersServices()
+		public void ProtectKeysWithProvidedCertificate_PreparesDecryptor()
 		{
-			var builder = new DataProtectionBuilder(new ServiceCollection());
 			var certificate = TestCertificate.GetCertificate();
-			builder.ProtectKeysWithProvidedCertificate(certificate);
+			var services = new ServiceCollection();
+			services
+				.AddLogging()
+				.AddDataProtection()
+				.ProtectKeysWithProvidedCertificate(certificate);
 
-			Assert.Single(builder.Services.Where(s => s.ServiceType == typeof(CertificateEncryptionOptions)));
-			Assert.Same(certificate, ((CertificateEncryptionOptions)builder.Services.First(s => s.ServiceType == typeof(CertificateEncryptionOptions)).ImplementationInstance).Certificate);
-			Assert.Single(builder.Services.Where(s => s.ServiceType == typeof(IXmlEncryptor)));
-			Assert.Equal(typeof(CertificateXmlEncryptor), builder.Services.First(s => s.ServiceType == typeof(IXmlEncryptor)).ImplementationType);
-			Assert.Single(builder.Services.Where(s => s.ServiceType == typeof(IXmlDecryptor)));
-			Assert.Equal(typeof(CertificateXmlDecryptor), builder.Services.First(s => s.ServiceType == typeof(IXmlDecryptor)).ImplementationType);
+			var provider = services.BuildServiceProvider();
+
+			// Shouldn't throw.
+			var decryptor = new CertificateXmlDecryptor(provider);
 		}
 
 		[Fact]
-		public void Use_NullBuilder()
+		public void ProtectKeysWithProvidedCertificate_SetsOptions()
 		{
-			var descriptor = new ServiceDescriptor(typeof(string), "a");
-			Assert.Throws<ArgumentNullException>(() => DataProtectionBuilderExtensions.Use(null, descriptor));
-		}
+			var certificate = TestCertificate.GetCertificate();
+			var services = new ServiceCollection();
+			services
+				.AddLogging()
+				.AddDataProtection()
+				.ProtectKeysWithProvidedCertificate(certificate);
 
-		[Fact]
-		public void Use_NullDescriptor()
-		{
-			var builder = new DataProtectionBuilder(new ServiceCollection());
-			Assert.Throws<ArgumentNullException>(() => DataProtectionBuilderExtensions.Use(builder, null));
-		}
-
-		[Fact]
-		public void Use_ReplacesAllServicesMatchingType()
-		{
-			var descriptor = new ServiceDescriptor(typeof(string), "c");
-			IServiceCollection services = new ServiceCollection();
-			services.Add(new ServiceDescriptor(typeof(string), "a"));
-			services.Add(new ServiceDescriptor(typeof(string), "b"));
-			var builder = new DataProtectionBuilder(services);
-			builder.Use(descriptor);
-			Assert.Single(services.Where(s => s.ServiceType == typeof(string)));
-			Assert.Equal("c", services[0].ImplementationInstance);
+			var provider = services.BuildServiceProvider();
+			var options = provider.GetRequiredService<IOptions<KeyManagementOptions>>();
+			Assert.IsType<CertificateXmlEncryptor>(options.Value.XmlEncryptor);
 		}
 	}
 }
