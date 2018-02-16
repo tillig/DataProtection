@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.DataProtection.XmlEncryption;
@@ -29,7 +30,7 @@ namespace DataProtectionExtensions
 		/// The key provider containing the private key of the certificate
 		/// used to decrypt data.
 		/// </summary>
-		private readonly RSACryptoServiceProvider _keyProvider;
+		private readonly RSA _keyProvider;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CertificateXmlDecryptor"/> class.
@@ -54,7 +55,7 @@ namespace DataProtectionExtensions
 			this.Logger = serviceProvider.GetRequiredService<ILogger<CertificateXmlDecryptor>>();
 			var options = serviceProvider.GetRequiredService<CertificateEncryptionOptions>();
 
-			this._keyProvider = (RSACryptoServiceProvider)options.Certificate.PrivateKey;
+			this._keyProvider = options.Certificate.GetRSAPrivateKey();
 			this._keyName = options.Certificate.Thumbprint;
 		}
 

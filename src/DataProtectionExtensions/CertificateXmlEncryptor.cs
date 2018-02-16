@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.DataProtection.XmlEncryption;
@@ -42,7 +43,7 @@ namespace DataProtectionExtensions
 		/// The key provider containing the public key of the certificate
 		/// used to encrypt data.
 		/// </summary>
-		private readonly RSACryptoServiceProvider _keyProvider;
+		private readonly RSA _keyProvider;
 
 		/// <summary>
 		/// The session key used to encrypt data. The master certificate key
@@ -80,7 +81,7 @@ namespace DataProtectionExtensions
 
 			// Get the data we need out of the certificate and we don't
 			// have to keep a reference to the whole thing.
-			this._keyProvider = (RSACryptoServiceProvider)options.Certificate.PublicKey.Key;
+			this._keyProvider = options.Certificate.GetRSAPublicKey();
 			this._keyName = options.Certificate.Thumbprint;
 
 			// Create a session key to encrypt the data. This will be included

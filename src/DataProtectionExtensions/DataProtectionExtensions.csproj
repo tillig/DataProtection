@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <VersionPrefix>0.1.0</VersionPrefix>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Travis Illig</Authors>
     <Company />
     <Product>DataProtection Extensions</Product>
@@ -33,10 +33,5 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta006">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 </Project>
